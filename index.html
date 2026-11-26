@@ -71,12 +71,12 @@ body {
 @keyframes blink { 50% { opacity: .35; } }
 
 /* ---------- вкладки ---------- */
-.tabs { display: flex; gap: 6px; overflow-x: auto; padding: 2px; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; padding: 2px; }
 .tab { appearance: none; border: 1px solid transparent; background: transparent; color: var(--muted); font: inherit; font-size: 13px; font-weight: 600; padding: 8px 12px; border-radius: 10px; cursor: pointer; white-space: nowrap; display: inline-flex; gap: 7px; align-items: center; }
 .tab:hover { color: var(--text); background: var(--surface); }
 .tab[aria-pressed="true"] { background: var(--surface); color: var(--accent); border-color: var(--line); box-shadow: var(--shadow); }
 .tab svg { flex: 0 0 auto; }
-@media (max-width: 520px) { .tab svg { display: none; } .tab { padding: 8px 10px; } }
+@media (max-width: 700px) { .tabs { gap: 5px; } .tab svg { display: none; } .tab { padding: 7px 9px; font-size: 12.5px; } }
 
 .notice { display: flex; gap: 9px; align-items: flex-start; background: var(--accent-soft); border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; font-size: 12.5px; color: var(--text); }
 .notice svg { flex: 0 0 auto; color: var(--accent); margin-top: 2px; }
@@ -251,6 +251,63 @@ details.data-table td { padding: 4px 8px; border-bottom: 1px solid var(--line); 
 .log li:last-child { border-bottom: 0; }
 .lt { color: var(--muted); font-size: 11px; }
 
+/* ---------- карточки ---------- */
+.cards-list .row.cardrow { display: grid; grid-template-columns: 44px minmax(0, 1.5fr) minmax(0, 1fr) auto; gap: 12px; align-items: center; }
+.thumb { width: 44px; height: 44px; border-radius: 10px; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; font-weight: 700; font-size: 15px; }
+.cinfo { min-width: 0; }
+.fields { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.cplats { display: flex; flex-direction: column; gap: 5px; align-items: flex-start; }
+.cacts { display: flex; gap: 6px; justify-content: flex-end; }
+.tag.warn { background: var(--warn-soft); border-color: transparent; color: var(--warn); }
+.tag.ok { background: var(--ok-soft); border-color: transparent; color: var(--ok); }
+@media (max-width: 700px) {
+  .cards-list .row.cardrow { grid-template-columns: 40px 1fr; grid-template-areas: "thumb info" "plats plats" "acts acts"; }
+  .cards-list .thumb { grid-area: thumb; }
+  .cards-list .cinfo { grid-area: info; }
+  .cards-list .cplats { grid-area: plats; flex-direction: row; flex-wrap: wrap; }
+  .cards-list .cacts { grid-area: acts; justify-content: flex-start; }
+}
+
+/* ---------- отзывы ---------- */
+.rv-list .row.rvrow { display: grid; grid-template-columns: 64px minmax(0, 1fr) 150px auto; gap: 12px; align-items: start; }
+.stars { color: var(--warn); letter-spacing: 2px; font-size: 13px; }
+.stars .off { color: var(--line); }
+.rv-text { font-size: 13px; }
+.rv-meta { color: var(--muted); font-size: 11.5px; margin-top: 2px; }
+.rv-status { justify-self: end; }
+@media (max-width: 700px) {
+  .rv-list .row.rvrow { grid-template-columns: 1fr auto; grid-template-areas: "plat status" "text text" "acts acts"; gap: 6px 12px; }
+  .rv-list .c.plat { grid-area: plat; }
+  .rv-list .rv-main { grid-area: text; }
+  .rv-list .rv-status { grid-area: status; }
+  .rv-list .c.acts { grid-area: acts; justify-content: flex-start; }
+}
+
+/* ---------- экономика ---------- */
+.progress { height: 10px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.progress i { display: block; height: 100%; background: var(--chart); border-radius: 999px; }
+.econ-grid { grid-template-columns: 64px minmax(150px, 1.6fr) repeat(6, minmax(56px, 0.75fr)); }
+@media (max-width: 700px) {
+  .thead.econ-grid { display: none; }
+  .row.econ { display: flex; flex-direction: column; gap: 2px; align-items: stretch; }
+  .row.econ .c { display: flex; justify-content: space-between; gap: 10px; text-align: right; }
+  .row.econ .c[data-label]::before { content: attr(data-label); color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
+  .row.econ .c.plat { justify-content: flex-start; }
+  .row.econ .c.prod { text-align: left; }
+}
+
+/* ---------- приёмка ---------- */
+.fbw-grid { grid-template-columns: 90px minmax(130px, 1.4fr) 54px 64px 124px 150px auto; }
+.decisions { display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
+@media (max-width: 700px) {
+  .thead.fbw-grid { display: none; }
+  .row.fbw { display: flex; flex-direction: column; gap: 2px; align-items: stretch; }
+  .row.fbw .c { display: flex; justify-content: space-between; gap: 10px; text-align: right; }
+  .row.fbw .c[data-label]::before { content: attr(data-label); color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
+  .row.fbw .c.acts { justify-content: flex-start; }
+  .row.fbw .c.status { justify-content: flex-start; }
+}
+
 /* ---------- модалка этикетки ---------- */
 .overlay { position: fixed; inset: 0; background: rgba(8, 10, 16, .55); display: flex; align-items: center; justify-content: center; z-index: 60; overflow: auto; padding: max(12px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(12px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
 .modal { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px; width: min(380px, 100%); box-shadow: 0 20px 60px rgba(0, 0, 0, .35); }
@@ -261,10 +318,14 @@ details.data-table td { padding: 4px 8px; border-bottom: 1px solid var(--line); 
 .paper-brand { font-weight: 800; font-size: 15px; letter-spacing: .02em; }
 .paper-demo { font-size: 10px; letter-spacing: .14em; border: 1px solid var(--paper-ink); padding: 1px 6px; border-radius: 4px; }
 .paper-order { font-family: ui-monospace, Consolas, monospace; font-size: 22px; font-weight: 700; letter-spacing: .04em; }
-.paper-prod { font-size: 12px; color: var(--paper-muted); }
-.paper-qty { font-size: 13px; font-weight: 600; }
+.paper-kicker { font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--paper-muted); }
+.paper-name { font-size: 12.5px; font-weight: 600; }
+.paper-meta { font-size: 11.5px; color: var(--paper-muted); }
+.paper-bc { text-align: center; font-family: ui-monospace, Consolas, monospace; letter-spacing: .1em; font-size: 10.5px; }
+.paper-size { font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--paper-muted); text-align: right; }
+.paper.tall { min-height: 280px; justify-content: space-between; gap: 4px; }
+.paper.wb { gap: 6px; }
 .barcode { width: 100%; height: 44px; display: block; }
-.paper-code { font-family: ui-monospace, Consolas, monospace; font-size: 10.5px; letter-spacing: .12em; text-align: center; color: var(--paper-muted); }
 
 /* ---------- тосты ---------- */
 .toasts { position: fixed; right: max(12px, env(safe-area-inset-right, 0px)); bottom: max(12px, env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; gap: 8px; z-index: 50; max-width: min(340px, calc(100vw - 24px)); }
@@ -312,19 +373,35 @@ details.data-table td { padding: 4px 8px; border-bottom: 1px solid var(--line); 
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="7" cy="6" r="1.6"/><circle cx="13" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/></svg>
       Остатки
     </button>
-    <button class="tab" type="button" data-tab="bot" aria-pressed="false">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-8 8H5l-2 2V12a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8Z"/><path d="M8.5 12h.01M15.5 12h.01"/></svg>
-      Бот
+    <button class="tab" type="button" data-tab="cards" aria-pressed="false">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="3" width="12" height="16" rx="2"/><path d="M16 21H6a2 2 0 0 1-2-2V7"/></svg>
+      Карточки
+    </button>
+    <button class="tab" type="button" data-tab="reviews" aria-pressed="false">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.6 5.4 5.9.8-4.3 4.1 1.1 5.8L12 16.4 6.7 19.1l1.1-5.8L3.5 9.2l5.9-.8L12 3Z"/></svg>
+      Отзывы
+    </button>
+    <button class="tab" type="button" data-tab="econ" aria-pressed="false">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01"/></svg>
+      Экономика
+    </button>
+    <button class="tab" type="button" data-tab="fbw" aria-pressed="false">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v10"/><path d="m8 9 4 4 4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+      Приёмка
     </button>
     <button class="tab" type="button" data-tab="ads" aria-pressed="false">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11v2a1 1 0 0 0 1 1h2l4 4V6L6 10H4a1 1 0 0 0-1 1Z"/><path d="M14 8a5 5 0 0 1 0 8"/><path d="M17 5a9 9 0 0 1 0 14"/></svg>
       Реклама
     </button>
+    <button class="tab" type="button" data-tab="bot" aria-pressed="false">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-8 8H5l-2 2V12a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8Z"/><path d="M8.5 12h.01M15.5 12h.01"/></svg>
+      Бот
+    </button>
   </nav>
 
   <div class="notice">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5v.1"/></svg>
-    <span>Демо-стенд: все данные синтетические, клиентские данные не используются. Вкладки, «Собрать», «Этикетка», «Передать» и быстрые ответы в боте — рабочие.</span>
+    <span>Демо-стенд: все данные синтетические, клиентские данные не используются. Вкладки и кнопки — «Собрать», «Этикетка», «Передать», публикация карточки, ответы и решения приёмки — рабочие.</span>
   </div>
 
   <main>
@@ -585,6 +662,287 @@ details.data-table td { padding: 4px 8px; border-bottom: 1px solid var(--line); 
       <p class="hint">Передаём ровно книгу: count — доступное к заказу. Резерв площадки (FREEZE) к книге не прибавляется; сверка через 15 минут и часовая возвращают книгу, если площадка разошлась.</p>
     </section>
 
+    <!-- ============ КАРТОЧКИ ============ -->
+    <section class="view" id="view-cards" hidden>
+      <div class="vhead">
+        <div>
+          <h2>Карточки</h2>
+          <p class="sub">3 товара · единый черновик уходит на WB, Ozon и ЯМ</p>
+        </div>
+      </div>
+      <div class="card" style="padding:12px 14px">
+        <div class="rows cards-list" id="cards-list">
+          <div class="row cardrow" data-art="DEMO-1042">
+            <div class="thumb" aria-hidden="true">Л</div>
+            <div class="cinfo">
+              <span class="prod-name">Лента упаковочная 48 мм</span>
+              <span class="prod-art mono">DEMO-1042</span>
+              <div class="fields">
+                <span class="tag">Фото 6</span>
+                <span class="tag">Характеристики 14</span>
+                <span class="tag">Описание</span>
+                <span class="tag ok">ТН ВЭД указан</span>
+              </div>
+            </div>
+            <div class="cplats">
+              <span class="pill info">WB · на модерации</span>
+              <span class="pill ok">Ozon · опубликована</span>
+              <span class="pill ok">ЯМ · создана</span>
+            </div>
+            <div class="cacts"></div>
+          </div>
+          <div class="row cardrow" data-art="DEMO-2210">
+            <div class="thumb" aria-hidden="true">П</div>
+            <div class="cinfo">
+              <span class="prod-name">Плёнка стрейч 500 мм</span>
+              <span class="prod-art mono">DEMO-2210</span>
+              <div class="fields">
+                <span class="tag">Фото 4</span>
+                <span class="tag">Характеристики 12</span>
+                <span class="tag">Описание</span>
+                <span class="tag warn" data-field="tnved">ТН ВЭД не указан</span>
+              </div>
+            </div>
+            <div class="cplats">
+              <span class="pill ok">WB · опубликована</span>
+              <span class="pill info">Ozon · на модерации</span>
+              <span class="pill muted">ЯМ · черновик</span>
+            </div>
+            <div class="cacts">
+              <button class="btn small" type="button" data-cact="tnved">Заполнить ТН ВЭД</button>
+            </div>
+          </div>
+          <div class="row cardrow" data-art="DEMO-4400">
+            <div class="thumb" aria-hidden="true">К</div>
+            <div class="cinfo">
+              <span class="prod-name">Короб 400×300×200</span>
+              <span class="prod-art mono">DEMO-4400</span>
+              <div class="fields">
+                <span class="tag">Фото 8</span>
+                <span class="tag">Характеристики 16</span>
+                <span class="tag">Описание</span>
+                <span class="tag ok">ТН ВЭД указан</span>
+              </div>
+            </div>
+            <div class="cplats">
+              <span class="pill ok">WB · опубликована</span>
+              <span class="pill ok">Ozon · опубликована</span>
+              <span class="pill muted" data-ym>ЯМ · черновик</span>
+            </div>
+            <div class="cacts">
+              <button class="btn small primary" type="button" data-cact="publish">Опубликовать в ЯМ</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="hint">Правки уходят на площадки по кнопке; для ЯМ при создании передаётся ТН ВЭД полем commodityCodes. Сертификаты Ozon загружаются в кабинете — API их не принимает.</p>
+    </section>
+
+    <!-- ============ ОТЗЫВЫ ============ -->
+    <section class="view" id="view-reviews" hidden>
+      <div class="vhead">
+        <div>
+          <h2>Отзывы и вопросы</h2>
+          <p class="sub">WB · Ozon · ЯМ · автоответы по правилам</p>
+        </div>
+        <div style="display:flex; gap:8px; align-items:center">
+          <span class="muted" style="font-size:12.5px">Автоответы</span>
+          <button class="switch" type="button" id="auto-reply" role="switch" aria-checked="true" aria-label="Автоответы по правилам"></button>
+        </div>
+      </div>
+      <div class="kpis">
+        <div class="kpi">
+          <span class="lab">Рейтинг WB</span>
+          <span class="val">4,9 <small>из 5</small></span>
+          <span class="note">за месяц, все кабинеты</span>
+        </div>
+        <div class="kpi">
+          <span class="lab">Рейтинг Ozon</span>
+          <span class="val">4,8 <small>из 5</small></span>
+          <span class="note">ЯМ — 5,0</span>
+        </div>
+        <div class="kpi">
+          <span class="lab">Без ответа</span>
+          <span class="val">2</span>
+          <span class="note">то, что не закрыли правила</span>
+        </div>
+        <div class="kpi">
+          <span class="lab">Автоответов сегодня</span>
+          <span class="val">23</span>
+          <span class="note">с подстановкой остатка и сроков</span>
+        </div>
+      </div>
+      <div class="card" style="padding:12px 14px">
+        <div class="rows rv-list" id="reviews-list">
+          <div class="row rvrow" data-platform="wb" data-kind="review">
+            <div class="c plat"><i class="dot wb"></i>WB</div>
+            <div class="rv-main">
+              <div><span class="stars" aria-label="5 из 5">★★★★★</span> <span class="rv-text">Пришло быстро, упаковка целая. Спасибо!</span></div>
+              <div class="rv-meta">Отзыв · сегодня 12:40 · автоответ: «Спасибо за отзыв! Рады, что всё дошло вовремя.»</div>
+            </div>
+            <div class="rv-status"><span class="pill ok">автоответ</span></div>
+            <div class="c acts"><span class="muted">—</span></div>
+          </div>
+          <div class="row rvrow" data-platform="ozon" data-kind="review">
+            <div class="c plat"><i class="dot ozon"></i>Ozon</div>
+            <div class="rv-main">
+              <div><span class="stars" aria-label="4 из 5">★★★★<span class="off">★</span></span> <span class="rv-text">Товар соответствует описанию, но доставка задержалась на день.</span></div>
+              <div class="rv-meta">Отзыв · сегодня 10:15 · под правило не попал — ждёт человека</div>
+            </div>
+            <div class="rv-status"><span class="pill muted">ждёт ответа</span></div>
+            <div class="c acts"><button class="btn small" type="button" data-rv>Ответить</button></div>
+          </div>
+          <div class="row rvrow" data-platform="ym" data-kind="question">
+            <div class="c plat"><i class="dot ym"></i>ЯМ</div>
+            <div class="rv-main">
+              <div><span class="tag">вопрос</span> <span class="rv-text">Будет ли ещё в наличии лента 48 мм?</span></div>
+              <div class="rv-meta">Вопрос · вчера 18:02 · ответ подставляет остаток из книги</div>
+            </div>
+            <div class="rv-status"><span class="pill info">вопрос</span></div>
+            <div class="c acts"><button class="btn small" type="button" data-rv>Ответить</button></div>
+          </div>
+          <div class="row rvrow" data-platform="ozon" data-kind="review">
+            <div class="c plat"><i class="dot ozon"></i>Ozon</div>
+            <div class="rv-main">
+              <div><span class="stars" aria-label="5 из 5">★★★★★</span> <span class="rv-text">Отличное качество, беру второй раз.</span></div>
+              <div class="rv-meta">Отзыв · сегодня 09:03 · автоответ по правилу «благодарность»</div>
+            </div>
+            <div class="rv-status"><span class="pill ok">автоответ</span></div>
+            <div class="c acts"><span class="muted">—</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="hint">Автоответы закрывают типовые отзывы и вопросы о наличии; всё, что не попало в правило, ждёт человека. Ответ уходит на площадку и пишется в поток событий.</p>
+    </section>
+
+    <!-- ============ ЭКОНОМИКА ============ -->
+    <section class="view" id="view-econ" hidden>
+      <div class="vhead">
+        <div>
+          <h2>Экономика</h2>
+          <p class="sub">ноябрь · план по тарифам API, факт — из отчётов площадок</p>
+        </div>
+      </div>
+      <div class="kpis">
+        <div class="kpi">
+          <span class="lab">План месяца</span>
+          <span class="val">1 200 000 ₽</span>
+          <span class="note">по тарифам категорий и габаритов</span>
+        </div>
+        <div class="kpi">
+          <span class="lab">Факт</span>
+          <span class="val">1 046 000 ₽ <small>87%</small></span>
+          <span class="note">отчёты WB · Ozon · ЯМ</span>
+        </div>
+        <div class="kpi">
+          <span class="lab">Средняя маржа</span>
+          <span class="val">21,4%</span>
+          <span class="note">после комиссий, логистики, себестоимости</span>
+        </div>
+        <div class="kpi">
+          <span class="lab">Комиссии площадок</span>
+          <span class="val">154 000 ₽</span>
+          <span class="note">за месяц, все кабинеты</span>
+        </div>
+      </div>
+      <article class="card">
+        <h3>План и факт</h3>
+        <p class="card-sub">выполнение 87% · «нет факта» не отменяет план: расчёты разные</p>
+        <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="87" aria-label="Выполнение плана 87%"><i style="width:87%"></i></div>
+        <div class="divider"></div>
+        <div class="table-wrap">
+          <div class="thead econ-grid" aria-hidden="true">
+            <span>Площадка</span><span>Товар</span><span style="text-align:right">Цена</span><span style="text-align:right">Комиссия</span><span style="text-align:right">Логистика</span><span style="text-align:right">Себест.</span><span style="text-align:right">Маржа/шт</span><span style="text-align:right">Маржа</span>
+          </div>
+          <div class="rows">
+            <div class="row econ econ-grid">
+              <div class="c plat"><i class="dot wb"></i>WB</div>
+              <div class="c prod"><span class="prod-name">Лента упаковочная 48 мм</span></div>
+              <div class="c num" data-label="Цена">590 ₽</div>
+              <div class="c num" data-label="Комиссия">19%</div>
+              <div class="c num" data-label="Логистика">68 ₽</div>
+              <div class="c num" data-label="Себестоимость">246 ₽</div>
+              <div class="c num" data-label="Маржа/шт">143 ₽</div>
+              <div class="c num" data-label="Маржа"><span class="pill ok">24%</span></div>
+            </div>
+            <div class="row econ econ-grid">
+              <div class="c plat"><i class="dot ozon"></i>Ozon</div>
+              <div class="c prod"><span class="prod-name">Уголок защитный 40×40</span></div>
+              <div class="c num" data-label="Цена">155 ₽</div>
+              <div class="c num" data-label="Комиссия">22%</div>
+              <div class="c num" data-label="Логистика">41 ₽</div>
+              <div class="c num" data-label="Себестоимость">58 ₽</div>
+              <div class="c num" data-label="Маржа/шт">20 ₽</div>
+              <div class="c num" data-label="Маржа"><span class="pill ok">13%</span></div>
+            </div>
+            <div class="row econ econ-grid">
+              <div class="c plat"><i class="dot ym"></i>ЯМ</div>
+              <div class="c prod"><span class="prod-name">Короб 400×300×200</span></div>
+              <div class="c num" data-label="Цена">470 ₽</div>
+              <div class="c num" data-label="Комиссия">18%</div>
+              <div class="c num" data-label="Логистика">74 ₽</div>
+              <div class="c num" data-label="Себестоимость">315 ₽</div>
+              <div class="c num" data-label="Маржа/шт">−4 ₽</div>
+              <div class="c num" data-label="Маржа"><span class="pill warn">−1%</span></div>
+            </div>
+            <div class="row econ econ-grid">
+              <div class="c plat"><i class="dot wb"></i>WB</div>
+              <div class="c prod"><span class="prod-name">Плёнка стрейч 500 мм</span></div>
+              <div class="c num" data-label="Цена">890 ₽</div>
+              <div class="c num" data-label="Комиссия">19%</div>
+              <div class="c num" data-label="Логистика">92 ₽</div>
+              <div class="c num" data-label="Себестоимость">402 ₽</div>
+              <div class="c num" data-label="Маржа/шт">227 ₽</div>
+              <div class="c num" data-label="Маржа"><span class="pill ok">25%</span></div>
+            </div>
+          </div>
+        </div>
+      </article>
+      <p class="hint">Убыточная строка подсвечена: короб на ЯМ уходит ниже нуля — такие позиции экономика ловит по каждому SKU.</p>
+    </section>
+
+    <!-- ============ ПРИЁМКА ============ -->
+    <section class="view" id="view-fbw" hidden>
+      <div class="vhead">
+        <div>
+          <h2>Приёмка FBW</h2>
+          <p class="sub">2 поставки · «Скорректировано» — акт корректировки WB</p>
+        </div>
+      </div>
+      <div class="card" style="padding:12px 14px">
+        <div class="table-wrap">
+          <div class="thead fbw-grid" aria-hidden="true">
+            <span>Поставка</span><span>Товар</span><span style="text-align:right">План</span><span style="text-align:right">Принято</span><span style="text-align:right">Скорректировано</span><span>Статус</span><span style="text-align:right">Решение</span>
+          </div>
+          <div class="rows" id="fbw-rows">
+            <div class="row fbw fbw-grid" data-supply="4471">
+              <div class="c mono">№ 4471</div>
+              <div class="c prod"><span class="prod-name">Лента упаковочная 48 мм</span></div>
+              <div class="c num" data-label="План">40</div>
+              <div class="c num" data-label="Принято">38</div>
+              <div class="c num" data-label="Скорректировано">−2</div>
+              <div class="c status"><span class="pill warn"><svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M8 2.5l6 11H2z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 6.5v3.2M8 11.6v.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>расхождение</span></span></div>
+              <div class="c acts decisions">
+                <button class="btn small" type="button" data-dec>По плану</button>
+                <button class="btn small" type="button" data-dec>По принятому</button>
+                <button class="btn small ghost" type="button" data-dec>Не выписывать</button>
+              </div>
+            </div>
+            <div class="row fbw fbw-grid" data-supply="4470">
+              <div class="c mono">№ 4470</div>
+              <div class="c prod"><span class="prod-name">Короб 400×300×200</span></div>
+              <div class="c num" data-label="План">25</div>
+              <div class="c num" data-label="Принято">25</div>
+              <div class="c num" data-label="Скорректировано">0</div>
+              <div class="c status"><span class="pill ok"><svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>принято</span></span></div>
+              <div class="c acts"><span class="muted">—</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="hint">Решения «по плану / по принятому / не выписывать» не меняются: строка ниже плана подсвечивается и ждёт человека.</p>
+    </section>
+
     <!-- ============ БОТ ============ -->
     <section class="view" id="view-bot" hidden>
       <div class="vhead">
@@ -721,7 +1079,7 @@ details.data-table td { padding: 4px 8px; border-bottom: 1px solid var(--line); 
       <button class="btn small ghost" type="button" data-close>Закрыть</button>
     </div>
     <div id="label-body"></div>
-    <p class="hint">Макет: в рабочей системе PDF этикетки приходит из API площадки.</p>
+    <p class="hint">Поля и размер как у площадки (WB — 58×40 мм, Ozon и ЯМ — 75×120 мм), штрихкод настоящий Code 39. Данные вымышленные: в рабочей системе PDF этикетки приходит из API.</p>
   </div>
 </div>
 
@@ -768,7 +1126,7 @@ details.data-table td { padding: 4px 8px; border-bottom: 1px solid var(--line); 
   }
 
   /* ---------- вкладки ---------- */
-  var views = { dashboard: $('#view-dashboard'), orders: $('#view-orders'), stocks: $('#view-stocks'), bot: $('#view-bot'), ads: $('#view-ads') };
+  var views = { dashboard: $('#view-dashboard'), orders: $('#view-orders'), stocks: $('#view-stocks'), bot: $('#view-bot'), ads: $('#view-ads'), cards: $('#view-cards'), reviews: $('#view-reviews'), econ: $('#view-econ'), fbw: $('#view-fbw') };
   var tabBtns = $$('.tab');
   function activate(name, pushHash) {
     if (!views[name]) name = 'dashboard';
@@ -929,32 +1287,63 @@ details.data-table td { padding: 4px 8px; border-bottom: 1px solid var(--line); 
 
   /* ---------- этикетка ---------- */
   var overlay = $('#label-modal'), labelBody = $('#label-body'), lastFocus = null;
-  function barcodeSVG(seed) {
-    var x = 10, r = '';
-    for (var i = 0; i < 44; i++) {
-      var c = seed.charCodeAt(i % seed.length);
-      var w = 1 + ((c + i * 7) % 3);
-      r += '<rect x="' + x + '" y="0" width="' + w + '" height="44" fill="#111"/>';
-      x += w + 1 + ((c + i) % 2);
+  var C39 = {
+    '0': '101001101101', '1': '110100101011', '2': '101100101011', '3': '110110010101',
+    '4': '101001101011', '5': '110100110101', '6': '101100110101', '7': '101001011011',
+    '8': '110100101101', '9': '101100101101',
+    'A': '110101001011', 'B': '101101001011', 'C': '110110100101', 'D': '101011001011',
+    'E': '110101100101', 'F': '101101100101', 'G': '101010011011', 'H': '110101001101',
+    'I': '101101001101', 'J': '101011001101', 'K': '110101010011', 'L': '101101010011',
+    'M': '110110101001', 'N': '101011010011', 'O': '110101101001', 'P': '101101101001',
+    'Q': '101010110011', 'R': '110101011001', 'S': '101101011001', 'T': '101011011001',
+    'U': '110010101011', 'V': '100110101011', 'W': '110011010101', 'X': '100101101011',
+    'Y': '110010110101', 'Z': '100110110101', '-': '100101011011', '.': '110010101101',
+    ' ': '100110101101', '$': '100100100101', '/': '100100101001', '+': '100101001001',
+    '%': '101001001001', '*': '100101101101'
+  };
+  function code39SVG(text) {
+    var s = '*' + String(text).toUpperCase().replace(/[^0-9A-Z\-. $/+%]/g, '') + '*';
+    var x = 0, r = '';
+    for (var i = 0; i < s.length; i++) {
+      var pat = C39[s.charAt(i)];
+      if (!pat) continue;
+      for (var j = 0; j < pat.length;) {
+        var bit = pat.charAt(j), k = j;
+        while (k < pat.length && pat.charAt(k) === bit) k++;
+        var w = k - j;
+        if (bit === '1') r += '<rect x="' + x + '" y="0" width="' + w + '" height="44" fill="#111"/>';
+        x += w;
+        j = k;
+      }
+      x += 1;
     }
-    return '<svg class="barcode" viewBox="0 0 ' + (x + 10) + ' 44" preserveAspectRatio="none" aria-hidden="true">' + r + '</svg>';
+    return '<svg class="barcode" viewBox="0 0 ' + Math.max(x, 1) + ' 44" preserveAspectRatio="none" aria-hidden="true">' + r + '</svg>';
   }
   function openLabel(row) {
     lastFocus = document.activeElement;
-    var plat = PLAT[row.getAttribute('data-platform')] || '';
-    $('#label-title').textContent = 'Этикетка · ' + plat + ' ' + row.getAttribute('data-order');
+    var p = row.getAttribute('data-platform');
+    var plat = PLAT[p] || '';
+    var order = row.getAttribute('data-order');
+    var artEl = row.querySelector('.prod-art');
+    var art = artEl ? artEl.textContent : '';
+    var size = p === 'wb' ? '58 × 40 мм' : '75 × 120 мм';
+    $('#label-title').textContent = 'Этикетка · ' + plat + ' ' + order;
     var paper = document.createElement('div');
-    paper.className = 'paper';
-    paper.innerHTML = '<div class="paper-top"><span class="paper-brand">' + plat + '</span><span class="paper-demo">ДЕМО</span></div>' +
+    paper.className = 'paper ' + (p === 'wb' ? 'wb' : 'tall');
+    paper.innerHTML = '<div class="paper-top"><span class="paper-brand"></span><span class="paper-demo">ДЕМО</span></div>' +
+      '<div class="paper-kicker">Отправление · FBS</div>' +
       '<div class="paper-order"></div>' +
-      '<div class="paper-prod"></div>' +
-      '<div class="paper-qty"></div>' +
-      barcodeSVG(row.getAttribute('data-order')) +
-      '<div class="paper-code"></div>';
-    paper.querySelector('.paper-order').textContent = row.getAttribute('data-order');
-    paper.querySelector('.paper-prod').textContent = row.getAttribute('data-product');
-    paper.querySelector('.paper-qty').textContent = row.getAttribute('data-qty') + ' шт.';
-    paper.querySelector('.paper-code').textContent = row.getAttribute('data-order') + ' · DEMO';
+      '<div class="paper-name"></div>' +
+      '<div class="paper-meta"></div>' +
+      code39SVG(order) +
+      '<div class="paper-meta paper-bc"></div>' +
+      '<div class="paper-size"></div>';
+    paper.querySelector('.paper-brand').textContent = plat;
+    paper.querySelector('.paper-order').textContent = order;
+    paper.querySelector('.paper-name').textContent = row.getAttribute('data-product');
+    paper.querySelector('.paper-meta').textContent = 'Арт. ' + art + ' · ' + row.getAttribute('data-qty') + ' шт.';
+    paper.querySelector('.paper-bc').textContent = order;
+    paper.querySelector('.paper-size').textContent = size;
     labelBody.innerHTML = '';
     labelBody.appendChild(paper);
     overlay.hidden = false;
@@ -1067,6 +1456,71 @@ details.data-table td { padding: 4px 8px; border-bottom: 1px solid var(--line); 
     logLine(on ? 'автопилот включён (демо) · цель CPO 200 ₽' : 'автопилот выключен (демо)');
     toast(on ? 'Автопилот кампании включён — пробный режим' : 'Автопилот кампании выключен');
   });
+
+  /* ---------- карточки ---------- */
+  var cardsList = $('#cards-list');
+  if (cardsList) {
+    cardsList.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-cact]');
+      if (!b) return;
+      var row = b.closest('.row');
+      var art = row.getAttribute('data-art');
+      if (b.getAttribute('data-cact') === 'tnved') {
+        var tag = row.querySelector('[data-field="tnved"]');
+        if (tag) { tag.className = 'tag ok'; tag.textContent = 'ТН ВЭД указан'; }
+        b.disabled = true;
+        b.textContent = 'Указан';
+        addEvent('hub', 'карточка ' + art + ' · ТН ВЭД заполнен, черновик ЯМ обновлён');
+        toast(art + ': ТН ВЭД сохранён — ЯМ примет карточку без предупреждения');
+      } else if (b.getAttribute('data-cact') === 'publish') {
+        var ym = row.querySelector('[data-ym]');
+        if (ym) { ym.className = 'pill ok'; ym.innerHTML = ICON.check + '<span>ЯМ · создана</span>'; }
+        b.disabled = true;
+        b.textContent = 'Создана';
+        addEvent('ym', 'карточка ' + art + ' создана · ушла в каталог ЯМ');
+        toast(art + ': карточка создана в ЯМ за 1,4 с');
+      }
+    });
+  }
+
+  /* ---------- отзывы ---------- */
+  var rvList = $('#reviews-list');
+  if (rvList) {
+    rvList.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-rv]');
+      if (!b) return;
+      var row = b.closest('.row');
+      var status = row.querySelector('.rv-status .pill');
+      if (status) setPill(status, 'ok', 'ответ отправлен', ICON.check);
+      b.disabled = true;
+      b.textContent = 'Отвечено';
+      addEvent(row.getAttribute('data-platform'), 'ответ на ' + (row.getAttribute('data-kind') === 'question' ? 'вопрос' : 'отзыв') + ' отправлен');
+      toast('Ответ отправлен на ' + (PLAT[row.getAttribute('data-platform')] || '') + ' — в тексте остаток из книги');
+    });
+  }
+  var ars = $('#auto-reply');
+  if (ars) {
+    ars.addEventListener('click', function () {
+      var on = ars.getAttribute('aria-checked') !== 'true';
+      ars.setAttribute('aria-checked', on ? 'true' : 'false');
+      toast(on ? 'Автоответы по правилам включены (демо)' : 'Автоответы по правилам выключены (демо)');
+    });
+  }
+
+  /* ---------- приёмка ---------- */
+  var fbwRows = $('#fbw-rows');
+  if (fbwRows) {
+    fbwRows.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-dec]');
+      if (!b) return;
+      var row = b.closest('.row');
+      var label = b.textContent.trim().toLowerCase();
+      setPill(row.querySelector('.status .pill'), 'ok', 'Решение: ' + label, ICON.check);
+      row.querySelector('.acts').innerHTML = '<span class="muted">—</span>';
+      addEvent('wb', 'приёмка № ' + row.getAttribute('data-supply') + ' · решение «' + label + '»');
+      toast('Поставка ' + row.getAttribute('data-supply') + ': ' + label);
+    });
+  }
 })();
 </script>
 
